@@ -1,9 +1,19 @@
-import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:parking_system/presentation/ui/screens/screens.dart';
 
-class AppRoutes {
-  static const initialRoute = 'home';
-  static Map<String, Widget Function(BuildContext)> routes = {
-    'home': (BuildContext context) => const HomeScreen(),
-  };
-}
+final appRouter = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const HomeScreen(),
+    ),
+    GoRoute(
+      path: '/login',
+      builder: (context, state) => const LoginScreen(),
+    ),
+    GoRoute(
+      path: '/about',
+      builder: (context, state) => const AboutScreen(),
+    ),
+  ],
+);

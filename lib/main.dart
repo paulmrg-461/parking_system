@@ -9,10 +9,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+        routerConfig: appRouter,
         title: 'Parking System',
-        initialRoute: AppRoutes.initialRoute,
-        routes: AppRoutes.routes,
         theme: CustomTheme.dark);
   }
 }

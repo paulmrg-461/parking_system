@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomTheme {
-  static bool isDarkMode = false;
+  static bool isDarkMode = true;
   static const Color primaryColor = Colors.cyan;
   static final TextStyle defaultFontStyle = GoogleFonts.manrope();
 
