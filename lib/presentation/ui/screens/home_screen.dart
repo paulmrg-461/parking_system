@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:parking_system/presentation/ui/screens/screens.dart';
 
 class HomeScreen extends StatelessWidget {
+  static const String name = 'home_screen';
   const HomeScreen({super.key});
 
   @override
@@ -19,7 +21,7 @@ class HomeScreen extends StatelessWidget {
         child: Text('Home Screen'),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push('/about'),
+        onPressed: () => context.pushNamed(AboutScreen.name),
         child: const Icon(Icons.info_outline_rounded),
       ),
     );

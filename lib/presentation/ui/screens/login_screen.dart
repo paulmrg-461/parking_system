@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatelessWidget {
+  static const String name = 'login_screen';
   const LoginScreen({super.key});
 
   @override
