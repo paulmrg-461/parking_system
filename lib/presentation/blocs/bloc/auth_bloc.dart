@@ -11,41 +11,61 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final Logout logoutUseCase;
   final Register registerUseCase;
   final GetCurrentUser getCurrentUserUseCase;
+
   AuthBloc({
     required this.loginUseCase,
     required this.logoutUseCase,
     required this.registerUseCase,
     required this.getCurrentUserUseCase,
-  }) : super(AuthInitial());
+  }) : super(AuthInitial()) {
+    on<AuthLoginEvent>(_onLogin);
+    on<AuthLogoutEvent>(_onLogout);
+    on<AuthRegisterEvent>(_onRegister);
+    on<AuthCheckUserEvent>(_onCheckUser);
+  }
 
-  Stream<AuthState> mapEventToState(AuthEvent event) async* {
-    if (event is AuthLoginEvent) {
-      yield AuthLoading();
+  Future<void> _onLogin(AuthLoginEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    try {
       final user = await loginUseCase(event.email, event.password);
       if (user != null) {
-        yield AuthAuthenticated(user);
+        emit(AuthAuthenticated(user));
       } else {
-        yield AuthError('Login failed');
+        emit(AuthError('Login failed'));
       }
-    } else if (event is AuthLogoutEvent) {
-      yield AuthLoading();
-      await logoutUseCase();
-      yield AuthUnauthenticated();
-    } else if (event is AuthRegisterEvent) {
-      yield AuthLoading();
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
+
+  Future<void> _onLogout(AuthLogoutEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    await logoutUseCase();
+    emit(AuthUnauthenticated());
+  }
+
+  Future<void> _onRegister(
+      AuthRegisterEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    try {
       final user = await registerUseCase(event.email, event.password);
       if (user != null) {
-        yield AuthAuthenticated(user);
+        emit(AuthAuthenticated(user));
       } else {
-        yield AuthError('Registration failed');
+        emit(AuthError('Registration failed'));
       }
-    } else if (event is AuthCheckUserEvent) {
-      final user = await getCurrentUserUseCase();
-      if (user != null) {
-        yield AuthAuthenticated(user);
-      } else {
-        yield AuthUnauthenticated();
-      }
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
+
+  Future<void> _onCheckUser(
+      AuthCheckUserEvent event, Emitter<AuthState> emit) async {
+    final user = await getCurrentUserUseCase();
+    if (user != null) {
+      emit(AuthAuthenticated(user));
+    } else {
+      emit(AuthUnauthenticated());
     }
   }
 }
